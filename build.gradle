@@ -18,7 +18,7 @@ buildscript {
 apply plugin: 'forge'
 
 
-def simpleVersion = "1.0"
+def simpleVersion = "1.0-GTNH"
 if (System.getenv("BUILD_NUMBER") != null)
 	simpleVersion += ".${System.getenv("BUILD_NUMBER")}"
 
@@ -30,7 +30,7 @@ minecraft {
 	 replaceIn "com/bymarcin/openglasses/OpenGlasses.java"
 		replace "@VERSION@", simpleVersion
 	
-	version = "1.7.10-10.13.2.1236"
+    version = "1.7.10-10.13.4.1614-1.7.10"
 	if (file('../run').exists()){
 		runDir = "../run/"
 	}else{
@@ -40,10 +40,15 @@ minecraft {
 
 repositories {
     maven { url = "http://maven.cil.li/" }
+    maven {
+        name = "gt"
+        url = "http://gregtech.overminddl1.com/"
+    }
 }
 dependencies {
     compile "li.cil.oc:OpenComputers:MC1.7.10-1.5.+:api"
     runtime "li.cil.oc:OpenComputers:MC1.7.10-1.5.+:dev"
+    compile "com.azanor.baubles:Baubles:1.7.10-1.0.1.10:deobf"
 }
 
 processResources

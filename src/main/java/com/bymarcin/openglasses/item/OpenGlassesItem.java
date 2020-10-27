@@ -4,19 +4,27 @@ import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 
+import baubles.api.BaubleType;
+import baubles.api.IBauble;
 import com.bymarcin.openglasses.OpenGlasses;
+import com.bymarcin.openglasses.event.ClientEventHandler;
+import com.bymarcin.openglasses.surface.ServerSurface;
 import com.bymarcin.openglasses.utils.Location;
 
+import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class OpenGlassesItem extends ItemArmor {
+@Optional.Interface(iface="baubles.api.IBauble",modid="Baubles")
+public class OpenGlassesItem extends ItemArmor implements IBauble {
 
 	public OpenGlassesItem() {
 		super(ArmorMaterial.CHAIN, 0, 0);
@@ -76,4 +84,83 @@ public class OpenGlassesItem extends ItemArmor {
 		tag.setInteger("DIM", uuid.dimID);
 		tag.setLong("uniqueKey", uuid.uniqueKey);
 	}
+
+    /**
+     * This method return the type of bauble this is.
+     * Type is used to determine the slots it can go into.
+     *
+     * @param itemstack
+     */
+    @Override
+    @Optional.Method(modid="Baubles")
+    public BaubleType getBaubleType(ItemStack itemstack) {
+        return BaubleType.AMULET;
+    }
+
+    /**
+     * This method is called once per tick if the bauble is being worn by a player
+     *
+     * @param itemstack
+     * @param player
+     */
+    @Override
+    @Optional.Method(modid="Baubles")
+    public void onWornTick(ItemStack itemstack, EntityLivingBase player) {
+    }
+
+    /**
+     * This method is called when the bauble is equipped by a player
+     *
+     * @param itemstack
+     * @param player
+     */
+    @Override
+    @Optional.Method(modid="Baubles")
+    public void onEquipped(ItemStack itemstack, EntityLivingBase player) {
+        if(player.worldObj.isRemote)
+            return;
+
+        if (player instanceof EntityPlayerMP)
+            ClientEventHandler.equiped((EntityPlayerMP)player, OpenGlassesItem.getUUID(itemstack));
+    }
+
+    /**
+     * This method is called when the bauble is unequipped by a player
+     *
+     * @param itemstack
+     * @param player
+     */
+    @Override
+    @Optional.Method(modid="Baubles")
+    public void onUnequipped(ItemStack itemstack, EntityLivingBase player) {
+        if(player.worldObj.isRemote)
+            return;
+
+        if (player instanceof EntityPlayerMP)
+            ClientEventHandler.unEquiped((EntityPlayerMP)player);
+    }
+
+    /**
+     * can this bauble be placed in a bauble slot
+     *
+     * @param itemstack
+     * @param player
+     */
+    @Override
+    @Optional.Method(modid="Baubles")
+    public boolean canEquip(ItemStack itemstack, EntityLivingBase player) {
+        return true;
+    }
+
+    /**
+     * Can this bauble be removed from a bauble slot
+     *
+     * @param itemstack
+     * @param player
+     */
+    @Override
+    @Optional.Method(modid="Baubles")
+    public boolean canUnequip(ItemStack itemstack, EntityLivingBase player) {
+        return true;
+    }
 }
