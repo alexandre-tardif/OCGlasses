@@ -1,5 +1,7 @@
 package com.bymarcin.openglasses.event;
 
+import baubles.api.BaublesApi;
+import com.bymarcin.openglasses.OpenGlasses;
 import com.bymarcin.openglasses.item.OpenGlassesItem;
 import com.bymarcin.openglasses.network.NetworkRegistry;
 import com.bymarcin.openglasses.network.packet.GlassesEventPacket;
@@ -8,6 +10,8 @@ import com.bymarcin.openglasses.surface.ClientSurface;
 import com.bymarcin.openglasses.utils.Location;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -17,28 +21,40 @@ import cpw.mods.fml.common.gameevent.TickEvent.PlayerTickEvent;
 public class ClientEventHandler {
 	
 	int tick = 0;
-	
+
 	@SubscribeEvent
 	public void onPlayerTick(PlayerTickEvent e){
 		if(e.player != Minecraft.getMinecraft().thePlayer) return;
 		tick ++;
-		if(tick%20 != 0){ 
+		if (tick%40 != 0){
 			return;
 		}
 		tick = 0;
-		
-		ItemStack glassesStack= e.player.inventory.armorInventory[3];
-		Item glasses = glassesStack!=null?glassesStack.getItem():null;
-		
-		if(glasses instanceof OpenGlassesItem){
+
+		ItemStack glassesStack = e.player.inventory.armorInventory[3];
+		Item glasses = glassesStack != null ? glassesStack.getItem() : null;
+		if (OpenGlasses.baubles && !(glasses instanceof OpenGlassesItem)) // try bauble
+        {
+            IInventory handler = BaublesApi.getBaubles(e.player);
+            if (handler != null)
+            {
+                for (int i = 0; i < handler.getSizeInventory(); ++i) {
+                    glassesStack = handler.getStackInSlot(i);
+                    glasses = glassesStack != null ? glassesStack.getItem() : null;
+                    if (glasses instanceof OpenGlassesItem)
+                        break;
+                }
+            }
+        }
+		if (glasses instanceof OpenGlassesItem){
 			Location uuid  = OpenGlassesItem.getUUID(glassesStack);
 			if(uuid!=null && ClientSurface.instances.haveGlasses==false){
-				equiped(e, uuid);
+				equiped(e.player, uuid);
 			}else if(ClientSurface.instances.haveGlasses == true && (uuid ==null || !uuid.equals(ClientSurface.instances.lastBind) ) ) {
-				unEquiped(e);
+				unEquiped(e.player);
 			}
 		}else if(ClientSurface.instances.haveGlasses == true){
-			unEquiped(e);
+			unEquiped(e.player);
 		}
 	}
 	
@@ -50,15 +66,15 @@ public class ClientEventHandler {
 		}
 	}
 	
-	private void unEquiped(PlayerTickEvent e){
+	public static void unEquiped(EntityPlayer player){
 		ClientSurface.instances.haveGlasses = false;
 		ClientSurface.instances.removeAllWidgets();
-		NetworkRegistry.packetHandler.sendToServer(new GlassesEventPacket(EventType.UNEQUIPED_GLASSES,null, e.player));
+		NetworkRegistry.packetHandler.sendToServer(new GlassesEventPacket(EventType.UNEQUIPED_GLASSES,null, player));
 	}
-	
-	private void equiped(PlayerTickEvent e, Location uuid){
+
+    public static void equiped(EntityPlayer player, Location uuid){
 		ClientSurface.instances.lastBind = uuid;
-		NetworkRegistry.packetHandler.sendToServer(new GlassesEventPacket(EventType.EQUIPED_GLASSES, uuid, e.player));
+		NetworkRegistry.packetHandler.sendToServer(new GlassesEventPacket(EventType.EQUIPED_GLASSES, uuid, player));
 		ClientSurface.instances.haveGlasses = true;
 	}
 }

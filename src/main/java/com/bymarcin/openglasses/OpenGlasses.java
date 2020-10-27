@@ -1,5 +1,6 @@
 package com.bymarcin.openglasses;
 
+import cpw.mods.fml.common.Loader;
 import li.cil.oc.api.Items;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
@@ -43,7 +44,9 @@ public class OpenGlasses
 	public static OpenGlasses instance;
 
 	public static CreativeTabs creativeTab = CreativeTabs.tabRedstone;
-	
+
+	public static boolean baubles = false;
+
 	public static OpenGlassesItem openGlasses;
 	public static OpenGlassesTerminalBlock openTerminal;
 	
@@ -57,12 +60,14 @@ public class OpenGlasses
 		config.load();
 		NetworkRegistry.initialize();
 		energyBuffer = config.get("Energy", "energyBuffer", 100).getInt(100);
-		energyMultiplier = config.get("Energy", "energyMultiplier", 1.0, "PowerDrain= (NumberOfWidgets / 10) * energyMultiplier").getDouble(1.0);	
+		energyMultiplier = config.get("Energy", "energyMultiplier", 1.0, "PowerDrain= (NumberOfWidgets / 10) * energyMultiplier").getDouble(1.0);
 	}
 
 	@EventHandler
 	public void init(FMLInitializationEvent event)
 	{
+        OpenGlasses.baubles = Loader.isModLoaded("Baubles");
+
 		NetworkRegistry.registerPacket(0, GlassesEventPacket.class, Side.SERVER);
 		NetworkRegistry.registerPacket(1, WidgetUpdatePacket.class, Side.CLIENT);
 		NetworkRegistry.registerPacket(2, TerminalStatusPacket.class, Side.CLIENT);
