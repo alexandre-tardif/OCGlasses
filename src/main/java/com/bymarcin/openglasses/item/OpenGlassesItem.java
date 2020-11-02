@@ -117,11 +117,11 @@ public class OpenGlassesItem extends ItemArmor implements IBauble {
     @Override
     @Optional.Method(modid="Baubles")
     public void onEquipped(ItemStack itemstack, EntityLivingBase player) {
-        if(player.worldObj.isRemote)
+        if(!player.worldObj.isRemote)
             return;
 
-        if (player instanceof EntityPlayerMP)
-            ClientEventHandler.equiped((EntityPlayerMP)player, OpenGlassesItem.getUUID(itemstack));
+        if (player instanceof EntityPlayer)
+            ClientEventHandler.equiped((EntityPlayer)player, OpenGlassesItem.getUUID(itemstack));
     }
 
     /**
@@ -133,11 +133,11 @@ public class OpenGlassesItem extends ItemArmor implements IBauble {
     @Override
     @Optional.Method(modid="Baubles")
     public void onUnequipped(ItemStack itemstack, EntityLivingBase player) {
-        if(player.worldObj.isRemote)
+        if(!player.worldObj.isRemote)
             return;
 
-        if (player instanceof EntityPlayerMP)
-            ClientEventHandler.unEquiped((EntityPlayerMP)player);
+        if (player instanceof EntityPlayer)
+            ClientEventHandler.unEquiped((EntityPlayer)player);
     }
 
     /**

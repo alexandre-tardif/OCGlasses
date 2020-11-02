@@ -18,7 +18,7 @@ buildscript {
 apply plugin: 'forge'
 
 
-def simpleVersion = "1.0-GTNH"
+def simpleVersion = "1.1-GTNH"
 if (System.getenv("BUILD_NUMBER") != null)
 	simpleVersion += ".${System.getenv("BUILD_NUMBER")}"
 
