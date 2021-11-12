@@ -1,6 +1,7 @@
 package com.bymarcin.openglasses.surface;
 
 import com.bymarcin.openglasses.surface.widgets.component.face.Dot;
+import com.bymarcin.openglasses.surface.widgets.component.face.ItemIcon;
 import com.bymarcin.openglasses.surface.widgets.component.face.Quad;
 import com.bymarcin.openglasses.surface.widgets.component.face.SquareWidget;
 import com.bymarcin.openglasses.surface.widgets.component.face.Text;
@@ -23,7 +24,8 @@ public enum WidgetType {
 	QUAD3D(Quad3D.class),
 	DOT3D(Dot3D.class),
 	LINE3D(Line3D.class),
-	QUAD(Quad.class)
+	QUAD(Quad.class),
+	ITEMICON(ItemIcon.class)
 	;
 	
 	Class<? extends Widget> clazz;

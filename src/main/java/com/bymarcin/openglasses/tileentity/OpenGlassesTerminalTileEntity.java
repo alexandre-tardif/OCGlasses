@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.UUID;
 
+import com.bymarcin.openglasses.surface.widgets.component.face.ItemIcon;
 import li.cil.oc.api.API;
 import li.cil.oc.api.machine.Arguments;
 import li.cil.oc.api.machine.Callback;
@@ -137,6 +138,13 @@ public class OpenGlassesTerminalTileEntity extends TileEntityEnvironment{
 	@Optional.Method(modid = "OpenComputers")
 	public Object[] addDot(Context context, Arguments args){
 		Widget w = new Dot();
+		return addWidget(w);
+	}
+
+	@Callback(direct = true)
+	@Optional.Method(modid = "OpenComputers")
+	public Object[] addItem(Context context, Arguments args){
+		Widget w = new ItemIcon();
 		return addWidget(w);
 	}
 	

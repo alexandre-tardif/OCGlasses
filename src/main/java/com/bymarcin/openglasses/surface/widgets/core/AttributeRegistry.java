@@ -10,6 +10,8 @@ import com.bymarcin.openglasses.surface.widgets.core.attribute.I3DPositionable;
 import com.bymarcin.openglasses.surface.widgets.core.attribute.IAlpha;
 import com.bymarcin.openglasses.surface.widgets.core.attribute.IAttribute;
 import com.bymarcin.openglasses.surface.widgets.core.attribute.IColorizable;
+import com.bymarcin.openglasses.surface.widgets.core.attribute.IItemable;
+import com.bymarcin.openglasses.surface.widgets.core.attribute.IRotatable;
 import com.bymarcin.openglasses.surface.widgets.core.attribute.IViewDistance;
 import com.bymarcin.openglasses.surface.widgets.core.attribute.ILookable;
 import com.bymarcin.openglasses.surface.widgets.core.attribute.IPositionable;
@@ -20,6 +22,8 @@ import com.bymarcin.openglasses.surface.widgets.core.attribute.IThroughVisibilit
 import com.bymarcin.openglasses.surface.widgets.core.attribute.I3DVertex;
 import com.bymarcin.openglasses.surface.widgets.core.luafunction.GetAlpha;
 import com.bymarcin.openglasses.surface.widgets.core.luafunction.GetColor;
+import com.bymarcin.openglasses.surface.widgets.core.luafunction.GetItem;
+import com.bymarcin.openglasses.surface.widgets.core.luafunction.GetRotation;
 import com.bymarcin.openglasses.surface.widgets.core.luafunction.GetViewDistance;
 import com.bymarcin.openglasses.surface.widgets.core.luafunction.GetID;
 import com.bymarcin.openglasses.surface.widgets.core.luafunction.GetLookingAt;
@@ -33,6 +37,8 @@ import com.bymarcin.openglasses.surface.widgets.core.luafunction.IsVisible;
 import com.bymarcin.openglasses.surface.widgets.core.luafunction.IsVisibleThroughObjects;
 import com.bymarcin.openglasses.surface.widgets.core.luafunction.SetAlpha;
 import com.bymarcin.openglasses.surface.widgets.core.luafunction.SetColor;
+import com.bymarcin.openglasses.surface.widgets.core.luafunction.SetItem;
+import com.bymarcin.openglasses.surface.widgets.core.luafunction.SetRotation;
 import com.bymarcin.openglasses.surface.widgets.core.luafunction.SetViewDistance;
 import com.bymarcin.openglasses.surface.widgets.core.luafunction.SetLookingAt;
 import com.bymarcin.openglasses.surface.widgets.core.luafunction.SetPosition;
@@ -87,7 +93,12 @@ public class AttributeRegistry {
 		
 		addAtribute(ILookable.class, SetLookingAt.class);
 		addAtribute(ILookable.class, GetLookingAt.class);
-		
+
+		addAtribute(IItemable.class, SetItem.class);
+		addAtribute(IItemable.class, GetItem.class);
+
+		addAtribute(IRotatable.class, SetRotation.class);
+		addAtribute(IRotatable.class, GetRotation.class);
 	}
 	
 	static HashMap<Class<? extends IAttribute>, LinkedList<Class<? extends LuaFunction>>> attributes;
