@@ -10,13 +10,12 @@ import com.bymarcin.openglasses.surface.widgets.core.attribute.IRotatable;
 import com.bymarcin.openglasses.surface.widgets.core.attribute.IScalable;
 import com.bymarcin.openglasses.utils.RenderUtils;
 import cpw.mods.fml.common.network.ByteBufUtils;
-import cpw.mods.fml.common.registry.GameData;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
 public class ItemIcon extends Widget implements IItemable, IPositionable, IScalable, IRotatable {
     ItemStack itemStack;
@@ -101,11 +100,7 @@ public class ItemIcon extends Widget implements IItemable, IPositionable, IScala
 
     @Override
     public boolean setItem(String name, int meta) {
-        NBTTagCompound nbt = new NBTTagCompound();
-        nbt.setShort("id", (short) GameData.getItemRegistry().getId(name));
-        nbt.setByte("Count", (byte) 1);
-        nbt.setShort("Damage", (short) meta);
-        return setItem(ItemStack.loadItemStackFromNBT(nbt));
+        return setItem(new ItemStack((Item) Item.itemRegistry.getObject(name), 1, meta));
     }
 
     @Override
