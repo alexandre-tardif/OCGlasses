@@ -29,6 +29,7 @@ public class RenderUtils {
         boolean renderAsBlock = item.getSpriteNumber() == 0 && RenderBlocks.renderItemIn3d(Block.getBlockFromItem(item).getRenderType());
 
         GL11.glPushMatrix();
+        GL11.glAlphaFunc(GL11.GL_ALWAYS, 0);
         GL11.glScalef(scale, scale, 1F);
         GL11.glTranslatef(8f + x, 8f + y, 0.0f);
         GL11.glRotatef(angle, 0.0f, 0.0f, 1.0f);
