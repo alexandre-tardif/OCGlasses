@@ -1,5 +1,6 @@
 package com.bymarcin.openglasses.surface.widgets.component.face;
 
+import com.bymarcin.openglasses.surface.widgets.core.attribute.IRotatable;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -17,8 +18,9 @@ import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class Text extends Dot implements ITextable{
+public class Text extends Dot implements ITextable, IRotatable {
 	String text="";
+	float rotation;
 	
 	public Text() {}
 
@@ -26,12 +28,14 @@ public class Text extends Dot implements ITextable{
 	public void writeData(ByteBuf buff) {
 		super.writeData(buff);
 		ByteBufUtils.writeUTF8String(buff, text);
+		buff.writeFloat(rotation);
 	}
 
 	@Override
 	public void readData(ByteBuf buff) {
 		super.readData(buff);
 		text = ByteBufUtils.readUTF8String(buff);
+		rotation = buff.readFloat();
 	}
 
 	@Override
@@ -53,7 +57,9 @@ public class Text extends Dot implements ITextable{
 		public void render(EntityPlayer player, double playerX, double playerY, double playerZ) {
 			GL11.glPushMatrix();
 			GL11.glScaled(size, size, 0);
-			fontRender.drawString(text, (int) x, (int) y, color);
+			GL11.glTranslatef(x, y, 0);
+			GL11.glRotatef(rotation, 0.0f, 0.0f, 1.0f);
+			fontRender.drawString(text, 0, 0, color);
 			GL11.glPopMatrix();
 			
 		}
@@ -80,4 +86,13 @@ public class Text extends Dot implements ITextable{
 		return text;
 	}
 
+	@Override
+	public void setRotation(float rotation) {
+		this.rotation = rotation;
+	}
+
+	@Override
+	public float getRotation() {
+		return rotation;
+	}
 }
