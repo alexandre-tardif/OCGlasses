@@ -30,8 +30,9 @@ public class RenderUtils {
         TextureManager tm = mc.getTextureManager();
 
         GL11.glPushMatrix();
+        GL11.glTranslatef(x, y, 0.0f);
         GL11.glScalef(scale, scale, 1F);
-        GL11.glTranslatef(8f + x, 8f + y, 0.0f);
+        GL11.glTranslatef(8f, 8f, 0.0f);
         GL11.glRotatef(angle, 0.0f, 0.0f, 1.0f);
         RenderHelper.enableGUIStandardItemLighting();
         itemRender.renderItemAndEffectIntoGUI(mc.fontRenderer, tm, stack, 0, 0);
