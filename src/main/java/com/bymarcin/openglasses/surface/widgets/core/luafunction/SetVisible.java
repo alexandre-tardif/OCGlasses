@@ -12,7 +12,8 @@ public class SetVisible extends LuaFunction{
 	public Object[] call(Context context, Arguments arguments) {
 		Widget widget = getSelf().getWidget(); 
 		if(widget !=null){
-			widget.setVisable(arguments.checkBoolean(0));
+			widget.setVisible(arguments.checkBoolean(0));
+			getSelf().getTerminal().updateWidget(getSelf().getWidgetRef());
 			return null;
 		}
 		throw new RuntimeException("Component does not exists!");
@@ -20,7 +21,7 @@ public class SetVisible extends LuaFunction{
 
 	@Override
 	public String getName() {
-		return "setVisable";
+		return "setVisible";
 	}
 
 }
