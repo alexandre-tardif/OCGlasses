@@ -18,13 +18,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-public class ItemIcon extends Widget implements IItemable, IPositionable, IScalable, IRotatable, IAlpha {
+public class ItemIcon extends Widget implements IItemable, IPositionable, IScalable, IRotatable {
     ItemStack itemStack;
     float x;
     float y;
     float scale = 1.0f;
     float rotation;
-    float alpha = 1.0f;
 
     @Override
     public void writeData(ByteBuf buff) {
@@ -33,7 +32,6 @@ public class ItemIcon extends Widget implements IItemable, IPositionable, IScala
         buff.writeFloat(y);
         buff.writeFloat(scale);
         buff.writeFloat(rotation);
-        buff.writeFloat(alpha);
     }
 
     @Override
@@ -43,7 +41,6 @@ public class ItemIcon extends Widget implements IItemable, IPositionable, IScala
         y = buff.readFloat();
         scale = buff.readFloat();
         rotation = buff.readFloat();
-        alpha = buff.readFloat();
     }
 
     @Override
@@ -108,23 +105,13 @@ public class ItemIcon extends Widget implements IItemable, IPositionable, IScala
         return itemStack;
     }
 
-    @Override
-    public float getAlpha() {
-        return alpha;
-    }
-
-    @Override
-    public void setAlpha(double alpha) {
-        this.alpha = (float)alpha;
-    }
-
     @SideOnly(Side.CLIENT)
     class RenderableIcon implements IRenderableWidget {
 
         @Override
         public void render(EntityPlayer player, double playerX, double playerY, double playerZ) {
             try {
-                RenderUtils.renderItemStackOnGUI(itemStack, x, y, scale, rotation, alpha);
+                RenderUtils.renderItemStackOnGUI(itemStack, x, y, scale, rotation);
             } catch (RuntimeException e) {
                 itemStack = null;
             }
