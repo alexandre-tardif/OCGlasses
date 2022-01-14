@@ -13,19 +13,19 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 
 public abstract class Widget implements IAttribute{
-	boolean isVisable = true;
+	boolean isVisible = true;
 	
 	public abstract void writeData(ByteBuf buff);
 
 	public abstract void readData(ByteBuf buff);
 	
 	public final void write(ByteBuf buff){
-		buff.writeBoolean(isVisable);
+		buff.writeBoolean(isVisible);
 		writeData(buff);
 	}
 
 	public final void read(ByteBuf buff){
-		isVisable = buff.readBoolean();
+		isVisible = buff.readBoolean();
 		readData(buff);
 	}
 
@@ -63,10 +63,10 @@ public abstract class Widget implements IAttribute{
 	public abstract IRenderableWidget getRenderable();
 
 	public boolean isVisible() {
-		return isVisable;
+		return isVisible;
 	}
 	
-	public void setVisable(boolean isVisable) {
-		this.isVisable = isVisable;
+	public void setVisible(boolean isVisible) {
+		this.isVisible = isVisible;
 	}
 }

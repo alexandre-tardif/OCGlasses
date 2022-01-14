@@ -4,6 +4,7 @@ import com.bymarcin.openglasses.surface.IRenderableWidget;
 import com.bymarcin.openglasses.surface.RenderType;
 import com.bymarcin.openglasses.surface.Widget;
 import com.bymarcin.openglasses.surface.WidgetType;
+import com.bymarcin.openglasses.surface.widgets.core.attribute.IAlpha;
 import com.bymarcin.openglasses.surface.widgets.core.attribute.IItemable;
 import com.bymarcin.openglasses.surface.widgets.core.attribute.IPositionable;
 import com.bymarcin.openglasses.surface.widgets.core.attribute.IRotatable;
@@ -89,6 +90,7 @@ public class ItemIcon extends Widget implements IItemable, IPositionable, IScala
         return rotation;
     }
 
+    @Override
     public boolean setItem(ItemStack newItem) {
         if(newItem == null || newItem.getItem() == null) {
             return false;
@@ -96,11 +98,6 @@ public class ItemIcon extends Widget implements IItemable, IPositionable, IScala
         this.itemStack = newItem;
 
         return true;
-    }
-
-    @Override
-    public boolean setItem(String name, int meta) {
-        return setItem(new ItemStack((Item) Item.itemRegistry.getObject(name), 1, meta));
     }
 
     @Override
@@ -113,7 +110,11 @@ public class ItemIcon extends Widget implements IItemable, IPositionable, IScala
 
         @Override
         public void render(EntityPlayer player, double playerX, double playerY, double playerZ) {
-            RenderUtils.renderItemStackOnGUI(itemStack, x, y, scale, rotation);
+            try {
+                RenderUtils.renderItemStackOnGUI(itemStack, x, y, scale, rotation);
+            } catch (RuntimeException e) {
+                itemStack = null;
+            }
         }
 
         @Override
