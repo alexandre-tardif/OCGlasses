@@ -56,8 +56,8 @@ public class Text extends Dot implements ITextable, IRotatable {
 		@Override
 		public void render(EntityPlayer player, double playerX, double playerY, double playerZ) {
 			GL11.glPushMatrix();
+			GL11.glTranslatef(x, y, 100);
 			GL11.glScaled(size, size, 0);
-			GL11.glTranslatef(x, y, 0);
 			GL11.glRotatef(rotation, 0.0f, 0.0f, 1.0f);
 			fontRender.drawString(text, 0, 0, color);
 			GL11.glPopMatrix();
