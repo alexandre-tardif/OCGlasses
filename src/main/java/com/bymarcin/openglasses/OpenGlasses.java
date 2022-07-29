@@ -46,6 +46,7 @@ public class OpenGlasses
 	public static CreativeTabs creativeTab = CreativeTabs.tabRedstone;
 
 	public static boolean baubles = false;
+	public static boolean tinkers = false;
 
 	public static OpenGlassesItem openGlasses;
 	public static OpenGlassesTerminalBlock openTerminal;
@@ -67,6 +68,7 @@ public class OpenGlasses
 	public void init(FMLInitializationEvent event)
 	{
         OpenGlasses.baubles = Loader.isModLoaded("Baubles");
+		OpenGlasses.tinkers = Loader.isModLoaded("TConstruct");
 
 		NetworkRegistry.registerPacket(0, GlassesEventPacket.class, Side.SERVER);
 		NetworkRegistry.registerPacket(1, WidgetUpdatePacket.class, Side.CLIENT);
