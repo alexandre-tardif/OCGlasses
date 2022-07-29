@@ -25,8 +25,8 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @Optional.InterfaceList({
-		@Optional.Interface(iface="baubles.api.IBauble",modid="Baubles"),
-		@Optional.Interface(iface="tconstruct.library.accessory.IAccessory",modid="TConstruct")
+    @Optional.Interface(iface="baubles.api.IBauble",modid="Baubles"),
+    @Optional.Interface(iface="tconstruct.library.accessory.IAccessory",modid="TConstruct")
 })
 public class OpenGlassesItem extends ItemArmor implements IBauble, IAccessory {
 
