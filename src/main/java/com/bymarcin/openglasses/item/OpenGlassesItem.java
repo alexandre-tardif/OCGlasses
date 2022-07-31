@@ -14,6 +14,7 @@ import net.minecraft.util.IIcon;
 
 import baubles.api.BaubleType;
 import baubles.api.IBauble;
+import tconstruct.library.accessory.IAccessory;
 import com.bymarcin.openglasses.OpenGlasses;
 import com.bymarcin.openglasses.event.ClientEventHandler;
 import com.bymarcin.openglasses.surface.ServerSurface;
@@ -23,8 +24,11 @@ import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-@Optional.Interface(iface="baubles.api.IBauble",modid="Baubles")
-public class OpenGlassesItem extends ItemArmor implements IBauble {
+@Optional.InterfaceList({
+    @Optional.Interface(iface="baubles.api.IBauble",modid="Baubles"),
+    @Optional.Interface(iface="tconstruct.library.accessory.IAccessory",modid="TConstruct")
+})
+public class OpenGlassesItem extends ItemArmor implements IBauble, IAccessory {
 
 	public OpenGlassesItem() {
 		super(ArmorMaterial.CHAIN, 0, 0);
@@ -83,6 +87,12 @@ public class OpenGlassesItem extends ItemArmor implements IBauble {
 		tag.setInteger("Z", uuid.z);
 		tag.setInteger("DIM", uuid.dimID);
 		tag.setLong("uniqueKey", uuid.uniqueKey);
+	}
+
+	@Override
+	@Optional.Method(modid = "TConstruct")
+	public boolean canEquipAccessory(ItemStack itemStack, int slot) {
+		return slot == 0;
 	}
 
     /**
