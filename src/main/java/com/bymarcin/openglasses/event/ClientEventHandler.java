@@ -17,6 +17,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.PlayerTickEvent;
+import tconstruct.armor.ArmorProxyClient;
+import tconstruct.armor.player.TPlayerStats;
 
 public class ClientEventHandler {
 	
@@ -33,6 +35,16 @@ public class ClientEventHandler {
 
 		ItemStack glassesStack = e.player.inventory.armorInventory[3];
 		Item glasses = glassesStack != null ? glassesStack.getItem() : null;
+
+		if (OpenGlasses.tinkers && !(glasses instanceof OpenGlassesItem)) {
+			IInventory inventory = TPlayerStats.get(e.player).armor;
+			for (int i = 0; i != inventory.getSizeInventory(); i++) {
+				glassesStack = e.side.isClient() ? ArmorProxyClient.armorExtended.getStackInSlot(i) : inventory.getStackInSlot(i);
+				glasses = glassesStack != null ? glassesStack.getItem() : null;
+				if (glasses instanceof OpenGlassesItem)
+					break;
+			}
+		}
 		if (OpenGlasses.baubles && !(glasses instanceof OpenGlassesItem)) // try bauble
         {
             IInventory handler = BaublesApi.getBaubles(e.player);
